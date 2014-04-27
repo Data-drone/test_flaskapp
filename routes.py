@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, render_template
 from flask.ext.sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
@@ -21,6 +21,18 @@ class Listing(db.Model):
 	Price = db.Column(db.Integer)
 	source = db.Column(db.String(128))
 	timestamp = db.Column(db.DateTime)
+
+@app.route('/')
+def home():
+	return render_template('base.html')
+
+@app.route('/app1/')
+def app1():
+	return render_template('app_bar1.html')
+
+@app.route('/app1/vis1/')
+def app1_vis1():
+	return render_template('vis1.html')
 
 @app.route('/listings/', methods=['GET'])
 def listings():

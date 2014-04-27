@@ -1,0 +1,25 @@
+{% extends "app_bar1.html" %}
+
+{% block details %}
+	<script>
+		// window size
+		var w = 600;
+		var h = 300;
+		
+		var data; // global data variable
+		
+		d3.json("http://127.0.0.1:5000/listings/", function(error, json) {
+			if (error) return console.warn(error); 
+				data = json;
+				console.log(json);
+		});
+		
+	</script>
+	<div>
+		
+	</div>
+
+
+
+
+{% endblock %}
