@@ -2,84 +2,62 @@
 
 {% block details %}
 	<script>
-		d3.table = function(config) {
-		var columns = [];
 
-		var tbl = function(selection) {
-		if (columns.length == 0) columns = d3.keys(selection.data()[0][0]);
-		console.log(columns)    
-
-		// Creating the table
-		var table = selection.append("table");
-		var thead = table.append("thead");
-		var tbody = table.append("tbody");
-
-		// appending the header row
-		var th = thead.selectAll("th")
-				.data(columns)
-
-		th.enter().append("th");
-			th.text(function(d) { return d });
-		th.exit().remove()
-
-		// creating a row for each object in the data
-		var rows = tbody.selectAll('tr')
-			.data(function(d) { return d; })
-
-		rows.enter().append("tr");
-		rows.attr('data-row',function(d,i){return i});
-		rows.exit().remove();   
-
-		// creating a cell for each column in the rows
-		var cells = rows.selectAll("td")
-				.data(function(row) {
-			return columns.map(function(key) {
-				        return {key:key, value:row[key]};
-			});
-				})
-
-		cells.enter().append("td");
-		cells.text(function(d) { return d.value; })
-			.attr('data-col',function(d,i){return i})
-			.attr('data-key',function(d,i){return d.key});
-		cells.exit().remove();
-
-		return tbl;
-		};
-
-		tbl.columns = function(_) {
-		if (!arguments.length) return columns;
-		columns = _;
-		return this;
-		};
-
-		return tbl;
-		};
-
-		// window size
-		var w = 600;
-		var h = 300;
 		
-		/// new table
-		var t = d3.table();
-
-
 		var data; // global data variable
 		
-		d3.json("http://127.0.0.1:5000/TblData/", function(error, json) {
+		d3.json("http://127.0.0.1:5000/counts/", function(error, json) {
 			if (error) return console.warn(error); 
 				data = json;
 				console.log(json);
-			d3.select("#tablehldr")
-			.datum(json)
-			.call(t)
+				nv.addGraph();
 		});
 		
+		nv.addGraph(function() {
+			var chart = nv.models.discreteBarChart()
+				.x(function(d) {return d.Manuf})
+				.y(function(d) {return d.Number})
+				.staggerLabels(true)
+				.tooltips(false)
+				.showValues(true)
+				.transitionDuration(350)
+				;
 		
-
+			d3.select("#chart svg")
+			  .datum(exampledata())
+			  .call(chart);
+			  
+			nv.utils.windowResize(chart.update);
+			
+			return chart;
+		});
+		
+	function exampledata()	{
+		return [ 
+		{
+		  "values": [
+		    {
+		      "Manuf": "Honda", 
+		      "Number": 140
+		    }, 
+		    {
+		      "Manuf": "Mazda", 
+		      "Number": 360
+		    }, 
+		    {
+		      "Manuf": "Toyota", 
+		      "Number": 551
+		    }
+		  ]
+		}]
+		};
+		
+		
 	</script>
-	<div id="tablehldr">
-		
+	<div id="chart">
+		<h3>Entries By Manufacturer</h3>
+		<svg style="height:500px">
+		</svg>
 	</div>
 
 

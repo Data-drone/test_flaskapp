@@ -6,6 +6,11 @@ db = SQLAlchemy(app)
 
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://CarAccess:Cars_Data@localhost/CarsScraper'
 
+class ManufCounts(db.Model):
+	__tablename__ = 'vw_CarCounts'
+	Manufacturer = db.Column(db.String(45), primary_key = True)
+	Number = db.Column(db.Integer)
+
 class TableData(db.Model):
 	__tablename__ = 'vw_LatestDataTable'
 	Manufacturer = db.Column(db.String(45))
@@ -90,6 +95,20 @@ def listings():
 			json_results.append(d)
 
 	return jsonify(items=json_results)
+
+@app.route('/counts/', methods=['GET'])
+def carcount():
+	if request.method == 'GET':
+		results = ManufCounts.query.all()
+		
+		json_results = []
+		for result in results:
+			d = {'Manuf': result.Manufacturer,
+				'Number': result.Number}
+			json_results.append(d)
+
+	return jsonify(values=json_results)
+
 
 if __name__ == '__main__':
   app.run(debug=True)

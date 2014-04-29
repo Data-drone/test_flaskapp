@@ -2,10 +2,13 @@
 <html>
 <head>
 	<title>Flask App</title>
+	<link rel=stylesheet type=text/css href="{{ url_for('static', filename='nvd3/nv.d3.css') }}">
 	<link rel=stylesheet type=text/css href="{{ url_for('static', filename='bootstrap/css/bootstrap.css') }}">
 	<script type="text/javascript" src="{{ url_for('static', filename='jquery/jquery.min.js') }}"></script>
 	<script type="text/javascript" src="{{ url_for('static', filename='bootstrap/js/bootstrap.min.js') }}"></script>
-	<script type="text/javascript" src="{{ url_for('static', filename='d3/d3.min.js') }}"></script>
+	<script type="text/javascript" src="{{ url_for('static', filename='d3/d3.v3.js') }}"></script>
+	<script type="text/javascript" src="{{ url_for('static', filename='nvd3/nv.d3.min.js') }}"></script>
+	
 </head>
 	<body>
 
