@@ -4,7 +4,11 @@ from flask.ext.sqlalchemy import SQLAlchemy
 app = Flask(__name__)
 db = SQLAlchemy(app)
 
+# connection string to database
+
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://CarAccess:Cars_Data@localhost/CarsScraper'
+
+# database references vw are views, tbl are tables
 
 class ManufCounts(db.Model):
 	__tablename__ = 'vw_CarCounts'
@@ -40,6 +44,8 @@ class Listing(db.Model):
 	source = db.Column(db.String(128))
 	timestamp = db.Column(db.DateTime)
 
+## API routes
+
 @app.route('/TblData/', methods=['GET'])
 def TblData():
 	if request.method == 'GET':
@@ -59,18 +65,6 @@ def TblData():
 			json_results.append(d)
 
 	return jsonify(items=json_results)
-
-@app.route('/')
-def home():
-	return render_template('base.html')
-
-@app.route('/app1/')
-def app1():
-	return render_template('app_bar1.html')
-
-@app.route('/app1/vis1/')
-def app1_vis1():
-	return render_template('vis1.html')
 
 @app.route('/listings/', methods=['GET'])
 def listings():
@@ -108,6 +102,22 @@ def carcount():
 			json_results.append(d)
 
 	return jsonify(values=json_results)
+
+# Routes to webpages
+
+@app.route('/')
+def home():
+	return render_template('base.html')
+
+@app.route('/app1/')
+def app1():
+	return render_template('app_bar1.html')
+
+@app.route('/app1/vis1/')
+def app1_vis1():
+	return render_template('vis1.html')
+
+
 
 
 if __name__ == '__main__':
